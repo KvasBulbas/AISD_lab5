@@ -28,34 +28,21 @@ public:
 	bool tableIsFull();
 
 	void printTable();
+	HashTable& operator=(const HashTable& table);
 
-
+	bool deleteTableByKey(int k);
 
 	int getHash(int K, int i)
 	{
 		const double a = (-1.0) * (1.0 - sqrt(5.0)) / 2.0;
-		//std::cout << K << ' ' << i << '\n';
-
-
-
 		if (i == 0)
-		{
-			int c = (int)(K * a * m_size) % m_size;
-			//std::cout << "C = " << c << '\n';
-			return c;
-		}
+			return K % m_size;
 
-
-		int b = ((int)(getHash(K, i - 1) * a * m_size)) % m_size;
-		//std::cout << "b = " << b << '\n';
-
-
-		return b;
-
-		//return (int)(getHash(K, i - 1) * a * m_size) % m_size;
-
+		return  (int)(getHash(K, i - 1) * a * m_size) % m_size;
 
 	}
+
+
 
 
 private:
