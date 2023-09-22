@@ -36,34 +36,36 @@ HashTable::~HashTable()
 		delete m_items[i];
 }
 
+void HashTable::clear()
+{
+	for (int i = 0; i < m_items.size(); i++)
+		delete m_items[i];
+	m_items.clear();
+
+}
 
 bool HashTable::addValue(int value)
 {
-	
 	if (!tableIsFull())
 	{
-		/*std::vector<bool> pastHashes;
+		std::vector<bool> pastHashes;
 		pastHashes.resize(m_size);
 
 		for (int i = 0; i < pastHashes.size(); i++)
-			pastHashes[i] = 0;*/
-		
+			pastHashes[i] = 0;
 
 		int i = 0;
 		while (1)
-		{
-			
+		{			
 			int currHash = getHash(value, i);
 
-
-			/*if (pastHashes[currHash])
+			if (pastHashes[currHash])
 				return false;
 			else
-				pastHashes[currHash] = 1;*/
+				pastHashes[currHash] = 1;
 
 			//std::cout << currHash << '\n';
 
-			
 			if (!checkKey(currHash))
 			{
 
@@ -74,7 +76,6 @@ bool HashTable::addValue(int value)
 				m_items.push_back(item);
 				return true;
 			}
-
 			i++;
 		}
 	}

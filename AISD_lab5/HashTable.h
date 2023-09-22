@@ -18,7 +18,7 @@ public:
 	HashTable(int size);
 	HashTable(const HashTable& table);
 	~HashTable();
-
+	void clear();
 
 
 	bool addValue(int value);
@@ -42,7 +42,10 @@ public:
 
 	}
 
-
+	std::vector<HashItem*> getItems()
+	{
+		return m_items;
+	}
 
 
 private:
