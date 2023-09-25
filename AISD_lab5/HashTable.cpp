@@ -3,11 +3,13 @@
 
 
 
-HashTable::HashTable(int size)
+HashTable::HashTable(int size)//правильно ли работет
 {
 	m_size = size;
+	m_items.resize(size);
+	for (int i = 0; i < size; i++)
+		m_items[i] = nullptr;
 
-	
 }
 
 HashTable::HashTable(const HashTable& table)
@@ -22,8 +24,13 @@ HashTable::HashTable(const HashTable& table)
 	for (int i = 0; i < table.m_items.size(); i++)
 	{
 		HashItem* item = new HashItem();
-		item->key = table.m_items[i]->key;
-		item->value = table.m_items[i]->value;
+		if (table.m_items[i])
+		{
+			item->key = table.m_items[i]->key;
+			item->value = table.m_items[i]->value;
+		}
+		else
+			item = nullptr;
 		m_items.push_back(item);
 	}
 }
@@ -33,18 +40,23 @@ HashTable::HashTable(const HashTable& table)
 HashTable::~HashTable()
 {
 	for (int i = 0; i < m_items.size(); i++)
+	{
 		delete m_items[i];
+		m_items[i] = nullptr;
+	}
 }
 
 void HashTable::clear()
 {
 	for (int i = 0; i < m_items.size(); i++)
+	{
 		delete m_items[i];
-	m_items.clear();
+		m_items[i] = nullptr;
+	}
 
 }
 
-bool HashTable::addValue(int value)
+bool HashTable::addValue(int K, int value)//правильно ли работает
 {
 	if (!tableIsFull())
 	{
@@ -57,7 +69,7 @@ bool HashTable::addValue(int value)
 		int i = 0;
 		while (1)
 		{			
-			int currHash = getHash(value, i);
+			int currHash = getHash(K, i);
 
 			if (pastHashes[currHash])
 				return false;
@@ -66,14 +78,15 @@ bool HashTable::addValue(int value)
 
 			//std::cout << currHash << '\n';
 
-			if (!checkKey(currHash))
+			if (m_items[currHash]==nullptr)
 			{
 
 				HashItem* item = new HashItem();
-				item->key = currHash;
+				item->key = K;
 				item->value = value;
 
-				m_items.push_back(item);
+
+				m_items[currHash] = item;
 				return true;
 			}
 			i++;
@@ -83,21 +96,23 @@ bool HashTable::addValue(int value)
 }
 
 
-bool HashTable::checkKey(int K)
+bool HashTable::checkKey(int K)//посмотреть правильно ли работает
 {	
-	if(m_items.size() != 0)
-		for (int i = 0; i < m_items.size(); i++)
-			if (m_items[i]->key == K)
-				return true;
+
+	for (int i = 0; i < m_items.size(); i++)
+		if (m_items[i] && m_items[i]->key == K)
+			return true;
 	return false;
 
 }
 
-bool HashTable::tableIsFull()
+bool HashTable::tableIsFull()//правильно ли работет
 {
-	if (m_items.size() == m_size)
-		return true;
-	return false;
+	for (int i = 0; i < m_items.size(); i++)
+		if (m_items[i] == nullptr)
+			return false;
+	
+	return true;
 }
 
 
@@ -105,7 +120,8 @@ bool HashTable::tableIsFull()
 void HashTable::printTable()
 {
 	for (int i = 0; i < m_items.size(); i++)
-		std::cout << "key = " << m_items[i]->key << " value = " << m_items[i]->value << '\n';
+		if(m_items[i])
+			std::cout << "hash = " << i << " key = " << m_items[i]->key << " value = " << m_items[i]->value << '\n';
 }
 
 
@@ -121,8 +137,13 @@ HashTable& HashTable::operator=(const HashTable& table)
 	for (int i = 0; i < table.m_items.size(); i++)
 	{
 		HashItem* item = new HashItem();
-		item->key = table.m_items[i]->key;
-		item->value = table.m_items[i]->value;
+		if (table.m_items[i])
+		{
+			item->key = table.m_items[i]->key;
+			item->value = table.m_items[i]->value;
+		}
+		else
+			item = nullptr;
 		m_items.push_back(item);
 	}
 
@@ -136,9 +157,11 @@ bool HashTable::deleteTableByKey(int k)
 
 	std::vector<HashItem*>::iterator it = m_items.begin();
 	for (int i = 0; it != m_items.end(); it++, i++)
-		if (m_items[i]->key == k)
+		if (m_items[i] && m_items[i]->key == k)
 		{
-			m_items.erase(it);
+			delete m_items[i];
+			m_items[i] = nullptr;
+
 			return true;
 		}
 	

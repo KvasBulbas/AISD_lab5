@@ -21,7 +21,7 @@ public:
 	void clear();
 
 
-	bool addValue(int value);
+	bool addValue(int K, int value);
 
 	bool checkKey(int K);
 
@@ -50,7 +50,6 @@ public:
 
 private:
 	int m_size;
-
 	std::vector<HashItem*> m_items;
 		
 

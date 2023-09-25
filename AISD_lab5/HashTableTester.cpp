@@ -27,9 +27,11 @@ void HashTableTester::addAndClear()
 
 		for (int i = 0; i < max_size; i++)
 		{
-			if (table.addValue(rand() % 300))
+			if (table.addValue(rand() % max_size, rand() % 500))
 				countOfItems++;
+			//std::cout << "Count of items:" << countOfItems << '\n';
 
+			//table.printTable();
 			checkAdd(table, countOfItems);
 
 		}
@@ -46,21 +48,34 @@ void HashTableTester::addAndClear()
 
 void HashTableTester::checkAdd(HashTable table, int countOfItems)
 {
-	assert(table.getItems().size() == countOfItems);
+	int count = 0;
+	for (int i = 0; i < max_size; i++)
+		if (table.getItems()[i])
+			count++;
+	//std::cout << "Count: " << count << '\n';
+
+	assert(count == countOfItems);
 }
 
 void HashTableTester::checkDestructor(HashTable table)
 {
-	assert(table.getItems().size() == 0);
+	int count = 0;
+	for (int i = 0; i < max_size; i++)
+		if (table.getItems()[i])
+			count++;
+	assert(count == 0);
 }
 
 
 void HashTableTester::search()
 {
 	HashTable table(max_size);
+	int j = 0;
+	for(int i = 0; i < max_size; i++)
+		table.addValue(i, rand() % 500);
 
-	while (table.getItems().size() != max_size)
-		table.addValue(rand() % 500);
+	//std::cout << "asasdasd";
+	//table.printTable();
 
 	for (int i = 0; i < max_size; i++)
 		assert(table.checkKey(i) == true);
@@ -75,8 +90,9 @@ void HashTableTester::remove()
 {
 	HashTable table(max_size);
 
-	while (table.getItems().size() != max_size)
-		table.addValue(rand() % 500);
+	for (int i = 0; i < max_size; i++)
+		table.addValue(i, rand() % 500);
+
 
 	
 
@@ -87,13 +103,15 @@ void HashTableTester::remove()
 	}
 	/*std::cout << "new table: \n";
 	table.printTable();*/
+	for (int i = 0; i < max_size; i++)
+		assert(table.getItems()[i] == nullptr);
 
-	assert(table.getItems().size() == 0);
 
+	for (int i = 0; i < max_size; i++)
+		table.addValue(i, rand() % 500);
 
-	while (table.getItems().size() != max_size)
-		table.addValue(rand() % 500);
-
+	//table.printTable();
+	
 	assert(table.deleteTableByKey(table.getItems()[max_size - 1]->key) == true);
 	assert(table.deleteTableByKey(table.getItems()[max_size / 2]->key) == true);
 	assert(table.deleteTableByKey(table.getItems()[0]->key) == true);
@@ -107,7 +125,7 @@ void HashTableTester::assign()
 {
 	HashTable table1(max_size);
 	for (int i = 0; i < max_size; i++)
-		table1.addValue(rand() % 300);
+		table1.addValue(rand() % 300, rand() % 500);
 
 	HashTable table2 = table1;
 
@@ -118,15 +136,20 @@ void HashTableTester::assign()
 
 	for (int i = 0; i < table1.getItems().size(); i++)
 	{
-		assert(table1.getItems()[i]->key == table2.getItems()[i]->key);
-		assert(table1.getItems()[i]->value == table2.getItems()[i]->value);
+		if (table1.getItems()[i])
+		{
+			assert(table1.getItems()[i]->key == table2.getItems()[i]->key);
+			assert(table1.getItems()[i]->value == table2.getItems()[i]->value);
+		}
+		else
+			assert(table1.getItems()[i] == table2.getItems()[i]);
 	}
 
 	table1.clear();
 	table2.clear();
 
 	for (int i = 0; i < max_size; i++)
-		table1.addValue(rand() % 300);
+		table1.addValue(rand() % 300, rand() % 500);
 
 	table2 = table1;
 
@@ -136,8 +159,13 @@ void HashTableTester::assign()
 
 	for (int i = 0; i < table1.getItems().size(); i++)
 	{
-		assert(table1.getItems()[i]->key == table2.getItems()[i]->key);
-		assert(table1.getItems()[i]->value == table2.getItems()[i]->value);
+		if (table1.getItems()[i])
+		{
+			assert(table1.getItems()[i]->key == table2.getItems()[i]->key);
+			assert(table1.getItems()[i]->value == table2.getItems()[i]->value);
+		}
+		else
+			assert(table1.getItems()[i] == table2.getItems()[i]);
 	}
 
 

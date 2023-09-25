@@ -9,16 +9,17 @@ int main()
 
 	HashTable table(30);
 
-	/*while (table.getItems().size() != 30)
-		table.addValue(rand() % 500);
 
-	table.printTable();
+	/*for (int i = 0; i < 100; i++)
+		table.addValue(rand() % 500, rand() % 500);
 
-	HashTable table2 = table;
+	table.printTable();*/
+
+	//HashTable table2 = table;
 
 
-	std::cout << "new\n";
-	table2.printTable();*/
+	//std::cout << "new\n";
+	//table2.printTable();
 
 
 	/*for (int i = 0; i < 30; i++)
