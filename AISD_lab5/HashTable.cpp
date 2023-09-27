@@ -54,6 +54,8 @@ void HashTable::clear()
 		m_items[i] = nullptr;
 	}
 
+	rowCount = 0;
+
 }
 
 bool HashTable::addValue(int K, int value)//правильно ли работает
@@ -79,6 +81,18 @@ bool HashTable::addValue(int K, int value)//правильно ли работает
 			//std::cout << currHash << '\n';
 
 			if (m_items[currHash]==nullptr)
+			{
+
+				HashItem* item = new HashItem();
+				item->key = K;
+				item->value = value;
+				rowCount++;
+
+				m_items[currHash] = item;
+				return true;
+			}
+
+			if ( m_items[currHash]->key == K)
 			{
 
 				HashItem* item = new HashItem();
@@ -161,7 +175,7 @@ bool HashTable::deleteTableByKey(int k)
 		{
 			delete m_items[i];
 			m_items[i] = nullptr;
-
+			rowCount--;
 			return true;
 		}
 	

@@ -47,9 +47,15 @@ public:
 		return m_items;
 	}
 
+	int getRowCount()
+	{
+		return rowCount;
+	}
+
 
 private:
 	int m_size;
+	int rowCount = 0;
 	std::vector<HashItem*> m_items;
 		
 

@@ -28,11 +28,11 @@ void HashTableTester::addAndClear()
 		for (int i = 0; i < max_size; i++)
 		{
 			if (table.addValue(rand() % max_size, rand() % 500))
-				countOfItems++;
+
 			//std::cout << "Count of items:" << countOfItems << '\n';
 
 			//table.printTable();
-			checkAdd(table, countOfItems);
+			checkAdd(table, table.getRowCount());
 
 		}
 		/*table.printTable();
@@ -52,7 +52,7 @@ void HashTableTester::checkAdd(HashTable table, int countOfItems)
 	for (int i = 0; i < max_size; i++)
 		if (table.getItems()[i])
 			count++;
-	//std::cout << "Count: " << count << '\n';
+	//std::cout << "Count: " << count << " row: " << countOfItems << '\n';
 
 	assert(count == countOfItems);
 }
