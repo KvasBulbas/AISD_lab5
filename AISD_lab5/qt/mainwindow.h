@@ -29,8 +29,6 @@ private slots:
     void on_clicked_resize();
     void on_clicked_deleteValue();
 
-    void onTreeUpdate();
-    void onLvNodeListCurrentRowChanged(int currentRow);
 
 private:
 

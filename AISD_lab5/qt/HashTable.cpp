@@ -106,7 +106,7 @@ int HashTable::addValue(int K, int value)//правильно ли работает
 
 			//std::cout << currHash << '\n';
 
-			if (m_items[currHash]==nullptr)
+            if (m_items[currHash]==nullptr || m_items[currHash]->key == K)
 			{
 
 				HashItem* item = new HashItem();
